@@ -1,0 +1,51 @@
+<!-- <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+  {{#each pics}}
+  <div class="my-gallery-item">
+    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+      <a href="http://jayancabatuan.com/uploads/{{this.file.filename}}" itemprop="contentUrl" data-size="{{this.file.width}}x{{this.file.height}}">
+          <img src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}" itemprop="thumbnail" alt="Image description" />
+      </a>
+      <figcaption itemprop="caption description">Image caption</figcaption>
+    </figure>
+  </div>
+  {{/each}}
+</div> -->
+<div class="gamma-container gamma-loading" id="gamma-container">
+
+<!-- <div class="grid">
+  <div class="grid-sizer"></div>
+  {{#each pics}}
+  <div class="grid-item">
+    <img src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}" itemprop="thumbnail" alt="Image description" />
+  </div>
+  {{/each}}
+</div> -->
+
+
+  <ul class="gamma-gallery">
+    {{#each pics}}
+    <li>
+      <div
+        data-alt="{{this.file.filename}}"
+        data-description="{{this.PhotoTitle}}"
+        data-caption="{{this.file.description}}"
+        data-size="{{this.file.width}}x{{this.file.height}}"
+        data-src="http://jayancabatuan.com/uploads/{{this.file.filename}}"
+        data-exif="{{this.meta.image.Model}},{{this.meta.exif.FocalLength}},{{this.meta.exif.FNumber}},{{this.meta.exif.ISO}},{{this.meta.exif.ExposureTime}}">
+        <div data-src="http://jayancabatuan.com/uploads/{{this.file.filename}}" data-min-width="1600"></div>
+        <div data-src="http://jayancabatuan.com/uploads/{{this.file.filename}}" data-min-width="1300"></div>
+        <div data-src="http://jayancabatuan.com/uploads/images/xlarge/{{this.file.filename}}" data-min-width="1000"></div>
+        <div data-src="http://jayancabatuan.com/uploads/images/large/{{this.file.filename}}" data-min-width="700"></div>
+        <div data-src="http://jayancabatuan.com/uploads/images/medium/{{this.file.filename}}" data-min-width="300"></div>
+        <div data-src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}" data-min-width="200"></div>
+        <div data-src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}" data-min-width="140"></div>
+        <div data-src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}"></div>
+        <noscript>
+          <img src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}" alt="{{this.file.filename}}"/>
+        </noscript>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+  <div class="gamma-overlay"></div>
+</div>

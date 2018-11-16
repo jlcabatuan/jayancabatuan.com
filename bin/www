@@ -1,0 +1,169 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var mongoose = require('mongoose');
+var dirtykids = require('../model/User');
+var fs = require('fs');
+var https = require('https');
+
+// letsencrypt files
+const privateKey  = fs.readFileSync('/home/jayan/letsencrypt/live/jayancabatuan.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/home/jayan/letsencrypt/live/jayancabatuan.com/cert.pem', 'utf8');
+const chain = fs.readFileSync('/home/jayan/letsencrypt/live/jayancabatuan.com/chain.pem', 'utf8');
+
+const credentials = { 
+  key: privateKey, 
+  cert: certificate,
+  ca: chain,
+  // secureProtocol: 'SSLv23_server_method',
+  // ciphers: 'ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:AES128-GCM-SHA256:!RC4:HIGH:!MD5:!aNULL:!EDH:!DES:!3DES',
+  ciphers: [
+      "ECDHE-RSA-AES256-SHA384",
+      "DHE-RSA-AES256-SHA384",
+      "ECDHE-RSA-AES256-SHA256",
+      "DHE-RSA-AES256-SHA256",
+      "ECDHE-RSA-AES128-SHA256",
+      "DHE-RSA-AES128-SHA256",
+      "HIGH",
+      "!aNULL",
+      "!eNULL",
+      "!EXPORT",
+      "!DES",
+      "!RC4",
+      "!MD5",
+      "!PSK",
+      "!SRP",
+      "!CAMELLIA"
+  ].join(':'),
+  honorCipherOrder: true
+};
+
+['connecting', 'connected', 'open', 'disconnecting', 'disconnected', 'close', 'reconnected', 'error', 'fullsetup'].forEach(name => {
+  mongoose.connection.on(name, () => {
+    console.log('###########################');
+    console.log('Mongoose event: ' + name);
+    console.log('###########################');
+  });
+});
+
+/**
+ * Connect to mongoose
+ */
+ try {
+   mongoose.connect('mongodb://jayan:triple5@jayancabatuan.com:26017/dirtykids');
+   console.log('Trying to connect to DB ');
+ } catch (err) {
+   console.log('Sever initialization failed ' , err.message);
+ }
+
+var gracefulExit = () => {
+  mongoose.connection.close(() => {
+    console.log('Mongoose default connection with DB is disconnected through app termination');
+    process.exit(0);
+  });
+}
+
+process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
+
+mongoose.connection.on('error', err => {
+  console.error('Failed to connect to DB on startup ', err);
+  mongoose.disconnect();
+});
+
+
+mongoose.connection.once('open', () => {
+  var app = require('../app');
+  var debug = require('debug')('jayancabatuan.com:server');
+  var http = require('http');
+
+  /**
+   * Get port from environment and store in Express.
+   */
+
+  var port = normalizePort(process.env.PORT || 80);
+  app.set('port', port);
+
+  /**
+   * Create HTTP server.
+   */
+
+  var server = http.createServer(app);
+
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+  
+  /** 
+   * https stuff
+   */
+  var httpsServer = https.createServer(credentials, app);
+  httpsServer.listen(443);  
+
+  /**
+   * Normalize a port into a number, string, or false.
+   */
+
+  function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+      // named pipe
+      return val;
+    }
+
+    if (port >= 0) {
+      // port number
+      return port;
+    }
+
+    return false;
+  }
+
+  /**
+   * Event listener for HTTP server "error" event.
+   */
+
+  function onError(error) {
+    if (error.syscall !== 'listen') {
+      throw error;
+    }
+
+    var bind = typeof port === 'string'
+      ? 'Pipe ' + port
+      : 'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+        console.error(bind + ' requires elevated privileges');
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        console.error(bind + ' is already in use');
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
+  }
+
+  /**
+   * Event listener for HTTP server "listening" event.
+   */
+
+  function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+  }
+  
+});

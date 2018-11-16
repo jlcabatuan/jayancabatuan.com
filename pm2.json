@@ -1,0 +1,12 @@
+[{
+  "name"      : "jayan",
+  "id"	      : 0,
+  "script"    : "./bin/www",
+  "args"      : "['--production' ,'--loglevel', '{0,1,2}']",
+  "node_args" : "--harmony",
+  "watch"     : false,
+  "env"       : {
+    "GHOST_NODE_VERSION_CHECK": "false",
+    "NODE_ENV": "production"
+  }
+}]

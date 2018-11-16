@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jayan cabatuan.</title>
+	<meta name="description" content="Website of Jayan Cabatuan" />
+	<meta name="keywords" content="jayan, jayan cabatuan, jayancabatuan, jcabatuan, photography, street, street photography,
+pinas, philippines, landscape, urban" />
+	<meta name="author" content="jayan cabatuan" />
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="/public/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="/public/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="/public/css/demo.css" />
+	<link rel="stylesheet" type="text/css" href="/public/css/style2.css" />
+	<script src="/public/js/modernizr-custom.js"></script>
+</head>
+
+<body class="demo-2">
+	<div class="container">
+		<header style="padding: 1em 0 3em; max-width: 1080px; margin: 0 auto; text-align: left;" class="codrops-header">
+		<h1>jayan cabatuan.
+			<span>
+				<i class="fa fa-envelope-o" aria-hidden="true"></i> <a href="mailto:jcabatuan@gmail.com">jcabatuan@gmail.com</a><br>
+				<i class="fa fa-instagram" aria-hidden="true"></i> <a href="http://instagram.com/jayancabatuan">jayancabatuan</a><br>
+				<i class="fa fa-facebook-official" aria-hidden="true"></i> <a href="http://facebook.com/jcabatuan">jcabatuan</a>
+			</span>
+		</h1>
+		</header>
+		<div class="content">
+			<!-- <a href="#">all</a>&nbsp;&nbsp;<a href="#">landscape</a>&nbsp;&nbsp;<a href="#">street/urban</a> -->
+			<div class="grid">
+				{{#each pics}}
+				<div class="grid__item" data-size="{{this.file.width}}x{{this.file.height}}">
+					<a href="/uploads/{{this.file.filename}}" class="img-wrap"><img src="/uploads/thumb_{{this.file.filename}}" alt="{{this.file.filename}}" />
+						<div class="description description--grid">
+							<h3>{{this.PhotoTitle}}</h3>
+							<!-- <p>Every time you drink a glass of milk or eat a piece of cheese, you harm a mother. Please go vegan. <em>&mdash; Gary L. Francione</em></p> -->
+							<p>{{this.file.description}}</p>
+							<div class="details">
+								<ul>
+									<li><i class="icon icon-camera"></i><span>{{this.meta.image.Model}}</span></li>
+									<li><i class="icon icon-focal_length"></i><span>{{this.meta.exif.FocalLength}}mm</span></li>
+									<li><i class="icon icon-aperture"></i><span>&fnof;/{{this.meta.exif.FNumber}}</span></li>
+									<li><i class="icon icon-exposure_time"></i><span>1/{{this.ShutterSpeed}}</span></li>
+									<li><i class="icon icon-iso"></i><span>{{this.meta.exif.ISO}}</span></li>
+								</ul>
+							</div>
+						</div>
+					</a>
+				</div>
+				{{/each}}
+
+			</div>
+			<!-- /grid -->
+			<div class="preview">
+				<button class="action action--close"><i class="fa fa-times"></i><span class="text-hidden">Close</span></button>
+				<div class="description description--preview"></div>
+			</div>
+			<!-- /preview -->
+		</div>
+		<!-- /content -->
+
+	</div>
+	<!-- /container -->
+
+	<form id="upload" action="/upload" method="POST" enctype="multipart/form-data">
+		<fieldset>
+			<legend>HTML File Upload</legend>
+			<div>
+				<label for="files">Files to upload:</label>
+				<input type="file" id="files" name="files" multiple="multiple" />
+			</div>
+			<div>
+				<p>Tags (landscape,street,people,selfie)</p>
+				<label for="tags">Tags</label>
+				<input type="text" id="tags" name="tags" required />
+			</div>
+			<div>
+				<p>Description</p>
+				<label for="desc">Description</label>
+				<textarea id="desc" name="desc"></textarea>
+			</div>
+			<div id="submitbutton">
+				<button type="submit">Upload Files</button>
+			</div>
+		</fieldset>
+
+	</form>
+
+	<script src="/public/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/public/js/masonry.pkgd.min.js"></script>
+	<script src="/public/js/classie.js"></script>
+	<script src="/public/js/main.js"></script>
+	<script>
+		(function() {
+			var support = { transitions: Modernizr.csstransitions },
+				// transition end event name
+				transEndEventNames = { 'WebkitTransition': 'webkitTransitionEnd', 'MozTransition': 'transitionend', 'OTransition': 'oTransitionEnd', 'msTransition': 'MSTransitionEnd', 'transition': 'transitionend' },
+				transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
+				onEndTransition = function( el, callback ) {
+					var onEndCallbackFn = function( ev ) {
+						if( support.transitions ) {
+							if( ev.target != this ) return;
+							this.removeEventListener( transEndEventName, onEndCallbackFn );
+						}
+						if( callback && typeof callback === 'function' ) { callback.call(this); }
+					};
+					if( support.transitions ) {
+						el.addEventListener( transEndEventName, onEndCallbackFn );
+					}
+					else {
+						onEndCallbackFn();
+					}
+				};
+
+			new GridFx(document.querySelector('.grid'), {
+				imgPosition : {
+					x : -0.5,
+					y : 1
+				},
+				onOpenItem : function(instance, item) {
+					instance.items.forEach(function(el) {
+						if(item != el) {
+							var delay = Math.floor(Math.random() * 50);
+							el.style.WebkitTransition = 'opacity .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1), -webkit-transform .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1)';
+							el.style.transition = 'opacity .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1), transform .5s ' + delay + 'ms cubic-bezier(.7,0,.3,1)';
+							el.style.WebkitTransform = 'scale3d(0.1,0.1,1)';
+							el.style.transform = 'scale3d(0.1,0.1,1)';
+							el.style.opacity = 0;
+						}
+					});
+				},
+				onCloseItem : function(instance, item) {
+					instance.items.forEach(function(el) {
+						if(item != el) {
+							el.style.WebkitTransition = 'opacity .4s, -webkit-transform .4s';
+							el.style.transition = 'opacity .4s, transform .4s';
+							el.style.WebkitTransform = 'scale3d(1,1,1)';
+							el.style.transform = 'scale3d(1,1,1)';
+							el.style.opacity = 1;
+
+							onEndTransition(el, function() {
+								el.style.transition = 'none';
+								el.style.WebkitTransform = 'none';
+							});
+						}
+					});
+				}
+			});
+		})();
+	</script>
+	<script>
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-30120075-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+</body>
+</html>

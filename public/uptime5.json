@@ -1,0 +1,26 @@
+{
+  "menlo": {
+    "totalCheck": "0",
+    "totalUptime": "0",
+    "lastUpdate": "",
+    "perc": ""
+  },
+  "compton": {
+    "totalCheck": "0",
+    "totalUptime": "0",
+    "lastUpdate": "",
+    "perc": ""
+  },
+  "orange": {
+    "totalCheck": "0",
+    "totalUptime": "0",
+    "lastUpdate": "",
+    "perc": ""
+  },
+  "perks": {
+    "totalCheck": "0",
+    "totalUptime": "0",
+    "lastUpdate": "",
+    "perc": ""
+  }
+}

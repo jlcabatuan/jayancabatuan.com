@@ -1,0 +1,3 @@
+greenlock certonly --standalone   --acme-version draft-11 --server https://acme-v02.api.letsencrypt.org/directory   --agree-tos --email jcabatuan@gmail.com --domains jayancabatuan.com   
+--community-member   --config-dir /home/jayan/letsencrypt/
+

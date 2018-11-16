@@ -1,0 +1,65 @@
+<style>
+/*.my-gallery {
+  width: 100%;
+  float: left;
+}
+.my-gallery img {
+  width: 100%;
+  height: auto;
+}
+.my-gallery figure {
+  display: block;
+  float: left;
+  margin: 0 5px 5px 0;
+  width: 150px;
+}*/
+.my-gallery figcaption {
+  display: none;
+}
+.my-gallery-item { width: 200px; }
+</style>
+<div class="gamma-container gamma-loading" id="gamma-container">
+
+  <ul class="gamma-gallery my-gallery">
+    {{#each pics}}
+    <li itemprop="associatedMedia" class="my-gallery-item" itemscope itemtype="http://schema.org/ImageObject">
+      <a href="http://jayancabatuan.com/uploads/{{this.file.filename}}" itemprop="contentUrl" data-size="{{this.file.width}}x{{this.file.height}}">
+          <img src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}" itemprop="thumbnail" alt="Image description" />
+      </a>
+      <figcaption itemprop="caption description">Image caption</figcaption>
+      <noscript>
+        <img src="http://jayancabatuan.com/uploads/images/small/{{this.file.filename}}" alt="{{this.file.filename}}"/>
+      </noscript>
+      <noscript>
+        <img src="/uploads/images/small/{{this.file.filename}}" alt="{{this.file.filename}}"/>
+      </noscript>
+
+    </li>
+    {{/each}}
+  </ul>
+
+  <!-- <ul class="gamma-gallery">
+    {{#each pics}}
+    <li>
+      <div data-alt="{{this.file.filename}}" data-description="<h3>{{this.PhotoTitle}}</h3>" data-max-width="{{this.file.width}}" data-max-height="{{this.file.height}}">
+        <div data-src="/uploads/{{this.file.filename}}" data-min-width="1600"></div>
+        <div data-src="/uploads/{{this.file.filename}}" data-min-width="1300"></div>
+        <div data-src="/uploads/images/xlarge/{{this.file.filename}}" data-min-width="1000"></div>
+        <div data-src="/uploads/images/large/{{this.file.filename}}" data-min-width="700"></div>
+        <div data-src="/uploads/images/medium/{{this.file.filename}}" data-min-width="300"></div>
+        <div data-src="/uploads/images/small/{{this.file.filename}}" data-min-width="200"></div>
+        <div data-src="/uploads/images/small/{{this.file.filename}}" data-min-width="140"></div>
+        <div data-src="/uploads/images/small/{{this.file.filename}}"></div>
+        <noscript>
+          <img src="/uploads/images/small/{{this.file.filename}}" alt="{{this.file.filename}}"/>
+        </noscript>
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+
+  <div class="gamma-overlay"></div> -->
+
+  <!-- <div id="loadmore" class="loadmore">Example for loading more items...</div> -->
+
+</div>
